@@ -1,6 +1,88 @@
 <div class="container my-5">
     <h1 class="mb-3">Employees</h1>
 
+    <!-- Dropdown to select filter -->
+    <div class="form-group mb-3">
+        <label for="filterSelect">Filter by:</label>
+        <select class="form-control" id="filterSelect" [(ngModel)]="selectedFilter" (change)="onFilterChange()">
+            <option value="name">Name</option>
+            <option value="department">Department</option>
+        </select>
+    </div>
+
+    <!-- Search input field -->
+    <div class="mb-3" *ngIf="selectedFilter === 'name'">
+        <label for="nameSearch">Search by Name:</label>
+        <input type="text" class="form-control" id="nameSearch" [(ngModel)]="nameFilter">
+    </div>
+    <div class="mb-3" *ngIf="selectedFilter === 'department'">
+        <label for="deptSearch">Search by Department:</label>
+        <input type="text" class="form-control" id="deptSearch" [(ngModel)]="departmentFilter">
+    </div>
+
+    <table class="table" *ngIf="!nameFilterEnabled && !departmentFilterEnabled">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Salary</th>
+                <th>Department</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let employee of employees">
+                <td>{{ employee.id}}</td>
+                <td>{{ employee.name}}</td>
+                <td>{{ employee.email}}</td>
+                <td>{{ employee.phone}}</td>
+                <td>{{ employee.salary}}</td>                
+                <td>{{ employee.department}}</td>                
+                <td><a [routerLink]="['/employees','edit',employee.id]">View</a></td>                
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table" *ngIf="(nameFilterEnabled || departmentFilterEnabled) && filteredEmployees && filteredEmployees.length > 0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Salary</th>
+                <th>Department</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let employee of filteredEmployees">
+                <td>{{ employee.id}}</td>
+                <td>{{ employee.name}}</td>
+                <td>{{ employee.email}}</td>
+                <td>{{ employee.phone}}</td>
+                <td>{{ employee.salary}}</td>                
+                <td>{{ employee.department}}</td>                
+                <td><a [routerLink]="['/employees','edit',employee.id]">View</a></td>                
+            </tr>
+        </tbody>
+    </table>
+
+    <p *ngIf="(nameFilterEnabled || departmentFilterEnabled) && (!filteredEmployees || filteredEmployees.length <= 0)">No Employees Found</p>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="container my-5">
+    <h1 class="mb-3">Employees</h1>
+
     <table class="table" *ngIf="employees && employees.length > 0">
         <thead>
             <tr>
@@ -26,4 +108,4 @@
         </tbody>
     </table>
     <p *ngIf="!employees || employees.length <= 0">No Employees Found</p>
-</div>
+</div> -->
